@@ -9,23 +9,30 @@ for (let i = 0; i < elemsClasses.length; ++i) {
 
     const className = elemsClasses[i].querySelector('a.ps-link').innerText;
     const [classType, startEnd, time, room] = elemClass.getElementsByClassName('ps_grid-cell');
+    
+    const statusCells = elemStatus.getElementsByClassName('ps_grid-cell');
+    const status = statusCells[0].innerText;
+
+    let waitlist, units, gradingBasis, grade, program, requirement;
+    if (status == 'Waiting')[, waitlist, units, gradingBasis, grade, program, requirement] = [...elemStatus.getElementsByClassName('ps_grid-cell')].map(e => e = e.innerText);
+    else [, units, gradingBasis, grade, program, requirement] = [...elemStatus.getElementsByClassName('ps_grid-cell')].map(e => e = e.innerText);
 
     const startEndDates = startEnd.innerText.match(/(\d{1,2}\/\d{1,2}\/\d{1,4})/g).map(e => new Date(e));
     
-    let timeStart, timeEnd;
-
+    let classDays, classTimes;
     if (!time.innerText.includes('To be Announced')) {
-        timeStart = time.innerText.match(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)/g);
-        timeEnd = time.innerText.match(/\d{1,2}:\d{2}(?:AM|PM)/g);
+        classDays = time.innerText.match(/(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)/g);
+        classTimes = time.innerText.match(/\d{1,2}:\d{2}(?:AM|PM)/g);
     }
 
     classData[className] = {
+        room: room.getElementsByClassName('ps_box-value')[0].textContent,
         classType: classType.innerText,
         startDate: startEndDates[0],
         endDate: startEndDates[1],
-        room: room.textContent,
-        timeStart,
-        timeEnd,
+        classDays, classTimes, waitlist,
+        units, gradingBasis, grade,
+        program, requirement, status,
     };
 }
 
